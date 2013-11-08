@@ -4,13 +4,20 @@ defmodule ChromechatServer.Mixfile do
   def project do
     [ app: :chromechat_server,
       version: "0.0.1",
+      dynamos: [ChromechatServer.Dynamo],
+      compilers: [:elixir, :dynamo, :app],
+      env: [prod: [compile_path: "ebin"]],
+      compile_path: "tmp/#{Mix.env}/chromechat_server/ebin",
       elixir: "~> 0.11.1-dev",
       deps: deps ]
   end
 
   # Configuration for the OTP application
   def application do
-    [mod: { ChromechatServer, [] }]
+    [
+      applications: [:cowboy, :dynamo],
+      mod: { ChromechatServer, [] }
+    ]
   end
 
   # Returns the list of dependencies in the format:
