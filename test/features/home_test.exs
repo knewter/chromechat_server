@@ -19,6 +19,7 @@ defmodule HomeTest do
   end
 
   def assert_json_body conn, unserialized_structure do
-    assert conn.sent_body == JSON.encode(unserialized_structure)
+    {:ok, expected_output} = JSON.encode(unserialized_structure)
+    assert conn.sent_body == expected_output
   end
 end

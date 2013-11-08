@@ -10,6 +10,11 @@ defmodule ChromechatServer.ApplicationRouter do
   end
 
   get "/" do
-    conn.resp_body("foo")
+    {:ok, output} = JSON.encode([
+      links: [
+        join_channel: "/join_channel"
+      ]
+    ])
+    conn.resp_body(output)
   end
 end
