@@ -6,7 +6,7 @@ defmodule ChromechatServer.Channel do
     :gen_server.start_link(__MODULE__, ChromechatServer.ChannelState.new, [])
   end
 
-  def handle_call({:join, user=ChromechatServer.User}, from, state) do
+  def handle_call({:join, user}, from, state) do
     {status, new_state} = add_user(user, from, state)
     broadcast_join_message(user.username, new_state)
     {:reply, status, new_state}
@@ -34,6 +34,9 @@ defmodule ChromechatServer.Channel do
     broadcast(message, state)
   end
 
+  defp broadcast(message, _state=ChromechatServer.ChannelState[listeners: users]) do
+      Enum.each(users, fn(user) -> broadcast(message, user.pid) end)
+  end
   defp broadcast(message, to_pid) do
     to_pid <- message
   end

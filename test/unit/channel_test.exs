@@ -1,6 +1,10 @@
 defmodule ChromechatServer.ChannelTest do
   use ExUnit.Case
 
+  setup do
+    {:ok, self_pid: self()}
+  end
+
   test "A client can connect to the server, which adds its User to the listeners list.", meta do
     initial_state = ChromechatServer.ChannelState.new
     knewter = new_user(meta[:self_pid])
