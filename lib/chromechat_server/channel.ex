@@ -14,6 +14,10 @@ defmodule ChromechatServer.Channel do
     :gen_server.call(pid, :part)
   end
 
+  def nicklist(pid) do
+    :gen_server.call(pid, :nicklist)
+  end
+
   # GenServer API
   def init(state) do
     {:ok, state}

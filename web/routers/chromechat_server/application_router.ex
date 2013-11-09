@@ -6,7 +6,7 @@ defmodule ChromechatServer.ApplicationRouter do
     # You can comment the line below if you don't need
     # any of them or move them to a forwarded router
     conn = conn.fetch([:cookies, :params])
-    conn = conn.assign(:title, "Welcome to Dwitter!")
+    conn = conn.assign(:title, "Welcome to Chromechat!")
   end
 
   get "/" do
