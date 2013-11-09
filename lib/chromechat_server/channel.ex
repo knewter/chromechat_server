@@ -11,6 +11,10 @@ defmodule ChromechatServer.Channel do
     broadcast_join_message(user.username, new_state)
     {:reply, status, new_state}
   end
+  def handle_call(:nicklist, _from, state) do
+    usernames = Enum.map(state.listeners, fn(user) -> user.username end)
+    {:reply, usernames, state}
+  end
 
   # GenServer API
   def init(state) do
