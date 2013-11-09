@@ -2,8 +2,8 @@ defmodule ChromechatServer.Server do
   use GenServer.Behaviour
 
   # Public API
-  def start_link do
-    :gen_server.start_link(__MODULE__, ChromechatServer.ServerState.new, [])
+  def start_link(server_state // ChromechatServer.ServerState.new) do
+    :gen_server.start_link(__MODULE__, server_state, [])
   end
 
   def connect(server_pid, username) do
@@ -12,6 +12,10 @@ defmodule ChromechatServer.Server do
 
   def disconnect(server_pid) do
     :gen_server.call(server_pid, :disconnect)
+  end
+
+  def channel_list(server_pid) do
+    :gen_server.call(server_pid, :channel_list)
   end
 
   # GenServer API
@@ -26,6 +30,10 @@ defmodule ChromechatServer.Server do
   def handle_call(:disconnect, from, state) do
     new_state = remove_user(from, state)
     {:reply, :ok, new_state}
+  end
+  def handle_call(:channel_list, _from, state) do
+    channel_names = state.channels |> Enum.map(fn(channel) -> channel.name end)
+    {:reply, channel_names, state}
   end
 
   # Private bits...

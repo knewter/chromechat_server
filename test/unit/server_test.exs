@@ -11,4 +11,11 @@ defmodule ChromechatServer.ServerTest do
     ChromechatServer.Server.connect(server_pid, "tester")
     assert :ok == ChromechatServer.Server.disconnect(server_pid)
   end
+
+  test "listing channels" do
+    channel = ChromechatServer.ChannelRecord.new(name: "bosshack123")
+    server_state = ChromechatServer.ServerState.new(channels: [channel])
+    {:ok, server_pid} = ChromechatServer.Server.start_link(server_state)
+    assert ["bosshack123"] == ChromechatServer.Server.channel_list(server_pid)
+  end
 end
